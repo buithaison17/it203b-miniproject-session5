@@ -2,59 +2,46 @@ package services;
 
 import models.MenuItem;
 import models.Order;
-
-import java.util.Map;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.UUID;
 
 public class OrderService {
+    private final List<Order> orders = new ArrayList<>();
+    private Order currentOrder = null;
 
-    // Tính tổng tiền đơn hàng
-    public double calculateTotal(Order order) {
-
-        if (order == null || order.getItems().isEmpty()) {
-            return 0;
-        }
-
-        return order.getItems()
-                .entrySet()
-                .stream()
-                .mapToDouble(entry ->
-                        entry.getKey().calculatePrice() * entry.getValue())
-                .sum();
+    public void createOrder() {
+        String orderId = "ORD-" + UUID.randomUUID().toString().substring(0, 5).toUpperCase();
+        currentOrder = new Order(orderId, new HashMap<>(), LocalDateTime.now());
+        orders.add(currentOrder);
+        System.out.println("Da tao don hang moi: " + orderId);
     }
 
-    // Hiển thị chi tiết đơn hàng
-    public void displayOrder(Order order) {
-
-        if (order == null) {
-            System.out.println("Không tìm thấy đơn hàng.");
+    public void addItemToCurrentOrder(MenuItem item, int quantity) {
+        if (currentOrder == null) {
+            System.out.println("Loi: Can tao don hang truoc!");
             return;
         }
 
-        System.out.println("\n===== ORDER " + order.getOrderId() + " =====");
-
-        if (order.getItems().isEmpty()) {
-            System.out.println("Đơn hàng chưa có món.");
+        if (item.getStock() < quantity) {
+            System.out.println("Loi: Khong du hang trong kho!");
             return;
         }
 
-        for (Map.Entry<MenuItem, Integer> entry : order.getItems().entrySet()) {
+        int currentQty = currentOrder.getItems().getOrDefault(item, 0);
+        currentOrder.getItems().put(item, currentQty + quantity);
+        item.setStock(item.getStock() - quantity);
 
-            MenuItem item = entry.getKey();
-            int quantity = entry.getValue();
+        System.out.println("Da them: " + item.getName() + " (SL: " + quantity + ")");
+    }
 
-            double itemTotal = item.calculatePrice() * quantity;
+    public Order getCurrentOrder() {
+        return currentOrder;
+    }
 
-            System.out.printf("%-20s x%d : %.0f\n",
-                    item.getName(),
-                    quantity,
-                    itemTotal);
-        }
-
-        System.out.println("-----------------------------");
-
-        double total = calculateTotal(order);
-
-        System.out.println("TOTAL: " + total);
-        System.out.println("ORDER DATE: " + order.getOrderDate());
+    public List<Order> getAllOrders() {
+        return orders;
     }
 }

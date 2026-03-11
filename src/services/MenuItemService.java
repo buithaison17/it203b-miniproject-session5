@@ -1,13 +1,23 @@
 package services;
 
+import models.Drink;
+import models.Food;
 import models.MenuItem;
+import presentation.FoodMenu;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 public class MenuItemService {
     List<MenuItem> list = new ArrayList<>();
+
+    public MenuItemService() {
+        // Dummy data
+        list.add(new Food("F01", "Phở Bò", 50000, 100, "Bát"));
+        list.add(new Food("F02", "Bún Chả", 45000, 80, "Đĩa"));
+        list.add(new Drink("D01", "Trà Đá", 5000, 200, "Cốc"));
+        list.add(new Drink("D02", "Cà Phê", 25000, 150, "Cốc"));
+    }
 
     public void add(MenuItem item) {
         list.add(item);
@@ -19,41 +29,16 @@ public class MenuItemService {
         System.out.println("Xóa thành công");
     }
 
-    public void update(MenuItem item) {
-        System.out.println("Cập nhật thành công");
+    public List<MenuItem> getList() {
+        return list;
     }
 
-    public Optional<MenuItem> findById(String id) {
+    public MenuItem findById(String id) {
         for (MenuItem item : list) {
-            if (item.getId().equals(id)) {
-                return Optional.of(item);
+            if (item.getId().equalsIgnoreCase(id)) {
+                return item;
             }
         }
-        return Optional.empty();
-    }
-
-    public boolean isEmpty() {
-        return list.isEmpty();
-    }
-
-    public Optional<List<MenuItem>> findByName(String name) {
-        List<MenuItem> result = new ArrayList<>();
-        for (MenuItem item : list) {
-            if (item.getName().equals(name)) {
-                result.add(item);
-            }
-        }
-        if (result.isEmpty()) {
-            return Optional.empty();
-        }
-        return Optional.of(result);
-    }
-
-    public void displayAll() {
-        if (isEmpty()) {
-            System.out.printf("Danh sách trống");
-            return;
-        }
-        list.forEach(System.out::println);
+        return null;
     }
 }
