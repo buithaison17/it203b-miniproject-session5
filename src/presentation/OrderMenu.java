@@ -1,90 +1,74 @@
 package presentation;
 
-import models.Order;
+import models.MenuItem;
+import services.MenuItemService;
 import services.OrderService;
 import utils.Input;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class OrderMenu {
-
-    private OrderService orderService = new OrderService();
-    private List<Order> orders = new ArrayList<>();
+    private final OrderService orderService = new OrderService();
+    private final MenuItemService menuItemService = new MenuItemService();
 
     public void menu() {
         int choice;
         do {
-            System.out.println("\n--- QUẢN LÝ ĐƠN HÀNG ---");
-            System.out.println("1. Tạo đơn hàng mới");
-            System.out.println("2. Thêm món vào giỏ hàng");
-            System.out.println("3. Tính tổng tiền đơn hàng");
-            System.out.println("4. Hiển thị tất cả đơn hàng");
-            System.out.println("0. Quay lại");
+            System.out.println("\n--- QUAN LY DON HANG ---");
+            System.out.println("1. Tao don hang moi");
+            System.out.println("2. Them mon vao gio hang");
+            System.out.println("3. Tinh tong tien");
+            System.out.println("4. Xem lich su don hang");
+            System.out.println("0. Quay lai");
 
-            choice = Input.inputIntegerPositive("Nhập chức năng: ");
+            choice = Input.inputIntegerPositive("Chon chuc nang: ");
 
             switch (choice) {
-
                 case 1:
-                    createOrder();
+                    orderService.createOrder();
                     break;
-
                 case 2:
-                    System.out.println("Chức năng thêm món do thành viên khác xử lý.");
+                    handleAddItem();
                     break;
-
                 case 3:
-                    calculateTotal();
-                    break;
-
                 case 4:
-                    displayAllOrders();
+                    System.out.println("Chuc nang dang phat trien.");
                     break;
-
                 case 0:
-                    System.out.println("Quay lại menu chính...");
                     break;
-
                 default:
-                    System.out.println("Chức năng không hợp lệ!");
+                    System.out.println("Lua chon khong hop le.");
             }
-
         } while (choice != 0);
     }
 
-        // tạo đơn hàng
-        private void createOrder () {
-            String id = Input.inputString("Nhập ID đơn hàng: ");
-            Order order = new Order(id, new java.util.HashMap<>(), java.time.LocalDateTime.now());
-            orders.add(order);
-            System.out.println("Tạo đơn hàng thành công!");
-        }
-
-        // tính tổng tiền
-        private void calculateTotal () {
-
-        if (orders.isEmpty()) {
-            System.out.println("Chưa có đơn hàng.");
+    private void handleAddItem() {
+        if (orderService.getCurrentOrder() == null) {
+            System.out.println("Thong bao: Vui long chon '1. Tao don hang' truoc.");
             return;
         }
 
-        for (Order order : orders) {
-            double total = orderService.calculateTotal(order);
-            System.out.println("Đơn: " + order.getOrderId() + " | Tổng tiền: " + total);
+        System.out.println("\n--- DANH SACH THUC DON ---");
+        System.out.printf("%-10s | %-20s | %-10s | %-8s\n", "ID", "Ten mon", "Gia", "Ton kho");
+        System.out.println("------------------------------------------------------------");
+
+        for (MenuItem item : menuItemService.getList()) {
+            System.out.printf("%-10s | %-20s | %-10.0f | %-8d\n",
+                    item.getId(), item.getName(), item.getPrice(), item.getStock());
         }
-    }
 
-        // hiển thị tất cả đơn
-        private void displayAllOrders () {
+        String itemId = Input.inputString("Nhap ID mon: ", false);
+        MenuItem selectedItem = menuItemService.findById(itemId);
 
-        if (orders.isEmpty()) {
-            System.out.println("Chưa có đơn hàng.");
+        if (selectedItem == null) {
+            System.out.println("Loi: ID khong ton tai.");
             return;
         }
 
-        for (Order order : orders) {
-            orderService.displayOrder(order);
+        if (selectedItem.getStock() <= 0) {
+            System.out.println("Loi: San pham da het hang.");
+            return;
         }
+
+        int quantity = Input.inputInteger("Nhap so luong: ", 1, selectedItem.getStock());
+        orderService.addItemToCurrentOrder(selectedItem, quantity);
     }
 }
