@@ -1,6 +1,12 @@
 package utils;
 
 import java.util.Scanner;
+<<<<<<< HEAD
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
+=======
+>>>>>>> 12596ac5b92372a2ced1608531cba997f52bd2db
 
 public class Input {
     private static final Scanner sc = new Scanner(System.in);
@@ -11,6 +17,11 @@ public class Input {
             String str = sc.nextLine();
             if (str.isBlank()) {
                 System.out.println("Không được để trống");
+<<<<<<< HEAD
+            } else if (str.length() < 6) {
+                System.out.println("Tối thiểu 6 kí tự");
+=======
+>>>>>>> 12596ac5b92372a2ced1608531cba997f52bd2db
             } else {
                 return str;
             }
@@ -49,4 +60,21 @@ public class Input {
             }
         }
     }
+<<<<<<< HEAD
+    public static LocalDate inputDate(String title) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+
+        while (true) {
+            System.out.print(title);
+            try {
+                String input = sc.nextLine();
+                return LocalDate.parse(input, formatter);
+            } catch (DateTimeParseException e) {
+                System.out.println("Sai định dạng ngày. Ví dụ đúng: 2026-03-11");
+            }
+        }
+    }
 }
+=======
+}
+>>>>>>> 12596ac5b92372a2ced1608531cba997f52bd2db
