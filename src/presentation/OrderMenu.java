@@ -54,7 +54,7 @@ public class OrderMenu {
     }
 
     // tạo đơn hàng
-    private void createOrder() {
+    public void createOrder() {
         String id = Input.inputString("Nhập ID đơn hàng: ");
         Order order = new Order(id, new java.util.HashMap<>(), java.time.LocalDateTime.now());
         orders.add(order);
@@ -62,7 +62,7 @@ public class OrderMenu {
     }
 
     // tính tổng tiền
-    private void calculateTotal() {
+      public void calculateTotal() {
 
         if (orders.isEmpty()) {
             System.out.println("Chưa có đơn hàng.");
@@ -76,7 +76,7 @@ public class OrderMenu {
     }
 
     // hiển thị tất cả đơn
-    private void displayAllOrders() {
+    public void displayAllOrders() {
 
         if (orders.isEmpty()) {
             System.out.println("Chưa có đơn hàng.");
