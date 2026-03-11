@@ -119,6 +119,7 @@ public class FoodMenu {
                     delete();
                     break;
                 case 4:
+                    findByName();
                     break;
                 case 5:
                     menuItemService.displayAll();
