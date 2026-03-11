@@ -45,7 +45,7 @@ abstract public class MenuItem {
         this.stock = stock;
     }
 
-    abstract double calculatePrice();
+    public abstract double calculatePrice();
 
     @Override
     public String toString() {

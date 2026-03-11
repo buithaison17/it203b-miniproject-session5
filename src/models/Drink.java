@@ -17,7 +17,7 @@ public class Drink extends MenuItem {
     }
 
     @Override
-    double calculatePrice() {
+    public double calculatePrice() {
         switch (size) {
             case "L":
                 return getPrice() + 10000;
