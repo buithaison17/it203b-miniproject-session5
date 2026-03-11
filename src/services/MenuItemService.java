@@ -1,10 +1,10 @@
 package services;
 
 import models.MenuItem;
-import presentation.FoodMenu;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public class MenuItemService {
     List<MenuItem> list = new ArrayList<>();
@@ -19,6 +19,41 @@ public class MenuItemService {
         System.out.println("Xóa thành công");
     }
 
+    public void update(MenuItem item) {
+        System.out.println("Cập nhật thành công");
+    }
 
+    public Optional<MenuItem> findById(String id) {
+        for (MenuItem item : list) {
+            if (item.getId().equals(id)) {
+                return Optional.of(item);
+            }
+        }
+        return Optional.empty();
+    }
 
+    public boolean isEmpty() {
+        return list.isEmpty();
+    }
+
+    public Optional<List<MenuItem>> findByName(String name) {
+        List<MenuItem> result = new ArrayList<>();
+        for (MenuItem item : list) {
+            if (item.getName().equals(name)) {
+                result.add(item);
+            }
+        }
+        if (result.isEmpty()) {
+            return Optional.empty();
+        }
+        return Optional.of(result);
+    }
+
+    public void displayAll() {
+        if (isEmpty()) {
+            System.out.printf("Danh sách trống");
+            return;
+        }
+        list.forEach(System.out::println);
+    }
 }

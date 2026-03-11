@@ -45,14 +45,10 @@ abstract public class MenuItem {
         this.stock = stock;
     }
 
-    abstract double calculatePrice();
+    public abstract double calculatePrice();
 
     @Override
     public String toString() {
-        return "FoodItem{" +
-                "id='" + id + '\'' +
-                ", name='" + name + '\'' +
-                ", price=" + price +
-                '}';
+        return "ID: " + id + " | Tên: " + name + " | Giá: " + price + " | Số lượng: " + price;
     }
 }
