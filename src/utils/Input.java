@@ -1,6 +1,9 @@
 package utils;
 
 import java.util.Scanner;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 
 public class Input {
     private static final Scanner sc = new Scanner(System.in);
@@ -48,6 +51,19 @@ public class Input {
                 }
             } catch (NumberFormatException e) {
                 System.out.println("Nhập không đúng định dạng hãy nhập lại");
+            }
+        }
+    }
+    public static LocalDate inputDate(String title) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+
+        while (true) {
+            System.out.print(title);
+            try {
+                String input = sc.nextLine();
+                return LocalDate.parse(input, formatter);
+            } catch (DateTimeParseException e) {
+                System.out.println("Sai định dạng ngày. Ví dụ đúng: 2026-03-11");
             }
         }
     }
