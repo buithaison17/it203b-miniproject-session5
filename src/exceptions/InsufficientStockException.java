@@ -9,7 +9,7 @@ public class InsufficientStockException extends RuntimeException {
         super(message);
     }
     public InsufficientStockException(String itemName, int requestedQuantity) {
-        super(String.format("'%s' hết hàng: đã đặt %d nhưng không còn sản phẩm nào.",
+        super(String.format("'%s' hết hàng: đã đặt %d nhưng không còn sản phẩm nào",
                 itemName, requestedQuantity));
     }
 }
