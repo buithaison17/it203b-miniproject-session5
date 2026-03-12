@@ -56,4 +56,18 @@ public class MenuItemService {
         }
         list.forEach(System.out::println);
     }
+
+    public Optional<List<MenuItem>> findByPriceRange(double minPrice, double maxPrice) {
+        List<MenuItem> result = new ArrayList<>();
+        for (MenuItem item : list) {
+            double price = item.getPrice();
+            if (price >= minPrice && price <= maxPrice) {
+                result.add(item);
+            }
+        }
+        if (result.isEmpty()) {
+            return Optional.empty();
+        }
+        return Optional.of(result);
+    }
 }
