@@ -2,6 +2,7 @@
 package presentation;
 
 import models.Order;
+import services.MenuItemService;
 import services.StatisticsService;
 import utils.Input;
 
@@ -19,7 +20,7 @@ public class Main {
             new StatisticsService(orderList);
 
     private static final StatisticsMenu statisticsMenu =
-            new StatisticsMenu(statisticsService);
+            new StatisticsMenu(statisticsService, new MenuItemService());
 
     public static void main(String[] args) {
 
