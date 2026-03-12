@@ -39,7 +39,7 @@ public class MenuItemService {
     public Optional<List<MenuItem>> findByName(String name) {
         List<MenuItem> result = new ArrayList<>();
         for (MenuItem item : list) {
-            if (item.getName().equals(name)) {
+            if (item.getName().toLowerCase().contains(name.toLowerCase())) {
                 result.add(item);
             }
         }
