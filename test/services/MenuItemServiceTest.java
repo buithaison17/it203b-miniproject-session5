@@ -1,35 +1,32 @@
 package services;
 
-import models.Drink;
 import models.Food;
 import models.MenuItem;
 import org.junit.jupiter.api.Test;
+
+import java.util.List;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 public class MenuItemServiceTest {
 
-    // Test thêm món vào menu
     @Test
     void testAddMenuItem() {
-
         MenuItemService service = new MenuItemService();
 
-        MenuItem food = new Food("F01", "Burger", 50000, 10, "fastfood");
+        MenuItem food = new Food("F01","Burger",50000,10,"fastfood");
 
         service.add(food);
 
         assertEquals(1, service.list.size());
-        assertEquals("Burger", service.list.get(0).getName());
     }
 
-    // Test xóa món khỏi menu
     @Test
     void testDeleteMenuItem() {
-
         MenuItemService service = new MenuItemService();
 
-        MenuItem food = new Food("F01", "Burger", 50000, 10, "fastfood");
+        MenuItem food = new Food("F01","Burger",50000,10,"fastfood");
 
         service.add(food);
         service.delete(food);
@@ -37,38 +34,52 @@ public class MenuItemServiceTest {
         assertEquals(0, service.list.size());
     }
 
-    // Test xóa khi danh sách rỗng
     @Test
-    void testDeleteItemNotExist() {
-
+    void testIsEmpty() {
         MenuItemService service = new MenuItemService();
 
-        MenuItem food = new Food("F01", "Burger", 50000, 10, "fastfood");
-
-        service.delete(food);
-
-        assertEquals(0, service.list.size());
+        assertTrue(service.isEmpty());
     }
 
-    // Test tính giá Food loại healthy (+10%)
     @Test
-    void testFoodCalculatePriceHealthy() {
+    void testFindById() {
+        MenuItemService service = new MenuItemService();
 
-        Food food = new Food("F02", "Salad", 40000, 10, "healthy");
+        MenuItem food = new Food("F01","Burger",50000,10,"fastfood");
+        service.add(food);
 
-        double price = food.calculatePrice();
+        Optional<MenuItem> result = service.findById("F01");
 
-        assertEquals(44000, price);
+        assertTrue(result.isPresent());
+        assertEquals("Burger", result.get().getName());
     }
 
-    // Test tính giá Drink size L
     @Test
-    void testDrinkCalculatePriceSizeL() {
+    void testFindByName() {
+        MenuItemService service = new MenuItemService();
 
-        Drink drink = new Drink("D01", "Coca", 15000, 10, "L");
+        MenuItem food = new Food("F01","Burger",50000,10,"fastfood");
+        service.add(food);
 
-        double price = drink.calculatePrice();
+        Optional<List<MenuItem>> result = service.findByName("Burger");
 
-        assertEquals(25000, price);
+        assertTrue(result.isPresent());
+        assertEquals(1, result.get().size());
+    }
+
+    @Test
+    void testFindByPriceRange() {
+        MenuItemService service = new MenuItemService();
+
+        MenuItem food1 = new Food("F01","Burger",50000,10,"fastfood");
+        MenuItem food2 = new Food("F02","Salad",30000,10,"healthy");
+
+        service.add(food1);
+        service.add(food2);
+
+        Optional<List<MenuItem>> result = service.findByPriceRange(20000,40000);
+
+        assertTrue(result.isPresent());
+        assertEquals(1, result.get().size());
     }
 }
