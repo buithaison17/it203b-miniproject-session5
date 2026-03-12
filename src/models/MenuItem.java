@@ -49,6 +49,6 @@ abstract public class MenuItem {
 
     @Override
     public String toString() {
-        return "ID: " + id + " | Tên: " + name + " | Giá: " + price + " | Số lượng: " + price;
+        return "ID: " + id + " | Tên: " + name + " | Giá: " + price + " | Số lượng: " + stock;
     }
 }
